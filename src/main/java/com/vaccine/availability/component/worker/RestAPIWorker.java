@@ -103,7 +103,7 @@ public class RestAPIWorker implements Runnable {
 							+ " center +" + center.getName());
 					log.info("User Date " + userDate + " Today date " + presentDate);
 					center.getSessions().stream()
-							.filter(session -> (session.getAvailable_capacity() >= 0
+							.filter(session -> (session.getAvailable_capacity() > 0
 									&& session.getMin_age_limit() == notification.getAgeGroup())
 									&& (notification.getEmailSendDate() == null || userDate.equals(presentDate)
 											|| userDate.before(presentDate)
