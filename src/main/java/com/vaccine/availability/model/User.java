@@ -24,6 +24,8 @@ public class User {
 	private String email;
 
 	private String password;
+	
+	private String otp;
 
 	public String getId() {
 		return id;
@@ -54,10 +56,20 @@ public class User {
 	public static String getSequenceName() {
 		return SEQUENCE_NAME;
 	}
+	
+	
+
+	public String getOtp() {
+		return otp;
+	}
+
+	public void setOtp(String otp) {
+		this.otp = otp;
+	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", email=" + email + ", password=" + password + "]";
+		return "User [id=" + id + ", email=" + email + ", password=" + password + ", otp=" + otp + "]";
 	}
 	
 	

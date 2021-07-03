@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.vaccine.availability.model.Center;
+
 import com.vaccine.availability.model.Notification;
 import com.vaccine.availability.model.Session;
 import com.vaccine.availability.model.User;
@@ -19,6 +20,8 @@ public class EmailService {
 	Logger log = LoggerFactory.getLogger(EmailService.class);
 	@Autowired
 	private JavaMailSender emailSender;
+
+	private SimpleMailMessage email;
 
 	private String toEmail;
 	private String content;
@@ -57,5 +60,35 @@ public class EmailService {
 				+ "+ ( Pin : " + notification.getPincode() + " Date : " + session.getDate() + " )";
 		toEmail = notification.getEmail();
 		return this;
+	}
+
+	public EmailService buildEmail() {
+
+		this.email = new SimpleMailMessage();
+		return this;
+	}
+
+	public EmailService setToEmail(String email) {
+		this.email.setTo(email);
+		return this;
+
+	}
+
+	public EmailService setContent(String content) {
+		
+		this.email.setText(content);
+		return this;
+	}
+
+	public EmailService setSubject(String subject) {
+		this.email.setSubject(subject);
+		return this;
+		
+	}
+
+	public void send() {
+		email.setFrom("noreply@vaccinenotification.com");
+		emailSender.send(email);
+		
 	}
 }

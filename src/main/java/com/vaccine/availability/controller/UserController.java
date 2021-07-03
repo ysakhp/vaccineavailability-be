@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vaccine.availability.model.ResponsePojo;
 import com.vaccine.availability.model.User;
 import com.vaccine.availability.service.SequenceService;
 import com.vaccine.availability.service.UserService;
@@ -41,13 +43,14 @@ public class UserController {
 	
 	@GetMapping(value = { "/", "" })
 	public List<User> getUsers(){
+		logger.info("Get Users");
 		return userService.getUsers();
 	}
 	
 	//http://localhost:8081/api/users/1
 	@GetMapping("/{id}")
 	public Optional<User> getUser(@PathVariable(value = "id") String id) {
-		System.out.println("Id "+id);
+		logger.info("Get User"+id);
 		return userService.getUser(id);
 	}
 	
@@ -57,4 +60,18 @@ public class UserController {
 
 		return userService.getUserByEmail(email);
 	}
+	
+	@PostMapping("/otp")
+	public ResponseEntity<ResponsePojo> generateOtp(@RequestBody String email){
+	
+		return userService.generateOtp(email);
+	}
+	
+	@PostMapping("/resetpassword")
+	public  ResponseEntity<ResponsePojo> resetPassword(@RequestBody User user){
+		logger.info("Reset Password");
+		return userService.resetPassword(user);
+	}
+	
+	
 }

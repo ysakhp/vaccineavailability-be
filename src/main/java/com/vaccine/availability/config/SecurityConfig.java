@@ -7,6 +7,7 @@ import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -44,10 +45,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.csrf().disable().authorizeRequests()
+		http.csrf().disable().httpBasic().and().authorizeRequests()
 				// Token creation not need authentication
-				.antMatchers("/api/authentication", "/api/users/register").permitAll().anyRequest().authenticated()
-				.and()
+				.antMatchers(HttpMethod.POST, "/api/users/otp").permitAll()
+				.antMatchers("/api/authentication", "/api/users/register").permitAll()
+				.antMatchers(HttpMethod.POST, "/api/users/resetpassword").permitAll()
+				.anyRequest().authenticated().and()
 				// Stateless wont set the session. Dont store any details in request
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
